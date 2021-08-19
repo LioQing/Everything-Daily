@@ -1,0 +1,84 @@
+﻿<Page
+    x:Class="Everything_Daily.AddARecordTypePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Everything_Daily"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <ScrollViewer ZoomMode="Disabled"
+            IsTabStop="True" IsVerticalScrollChainingEnabled="True"
+            HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto"
+            VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto">
+        <Grid Margin="20, 20, 20, 20" RowSpacing="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Style="{StaticResource TitleTextBlockStyle}">
+                    Add a Record Type
+            </TextBlock>
+
+            <Grid Grid.Row="1" ColumnSpacing="20" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid RowSpacing="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBox x:Name="RecordTypeNameTextBox" Header="Record Type Name" TextChanged="RecordTypeNameTextBox_TextChanged"/>
+
+                    <TextBox x:Name="RecordTypeIdTextBox" Header="Record Type ID" IsEnabled="False" Grid.Row="1"/>
+
+                    <CheckBox
+                            Content="Generate a Record ID" 
+                            IsChecked="True"
+                            Checked="GenIdCheckTextBox_Checked"
+                            Unchecked="GenIdCheckTextBox_Unchecked"
+                            Grid.Row="2"/>
+
+                    <Border Grid.Row="3" BorderThickness="0, 20, 0, 0">
+                        <Button Width="150" Click="AddButton_Click">Add</Button>
+                    </Border>
+                </Grid>
+
+                <StackPanel Orientation="Vertical" Grid.Column="1">
+                    <Border BorderThickness="2">
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}">
+                            Record Type Color
+                        </TextBlock>
+                    </Border>
+
+                    <ColorPicker x:Name="ColorPicker"
+                        HorizontalAlignment="Left"
+                        ColorSpectrumShape="Ring"
+                        IsMoreButtonVisible="True"
+                        IsColorSliderVisible="True"
+                        IsColorChannelTextInputVisible="True"
+                        IsHexInputVisible="True"
+                        IsAlphaEnabled="False"
+                        IsAlphaSliderVisible="True"
+                        IsAlphaTextInputVisible="True" />
+                </StackPanel>
+            </Grid>
+
+            <StackPanel x:Name="NotificationPanel" VerticalAlignment="Bottom" Orientation="Vertical" Grid.Row="1">
+                <StackPanel.ChildrenTransitions>
+                    <TransitionCollection>
+                        <EntranceThemeTransition />
+                    </TransitionCollection>
+                </StackPanel.ChildrenTransitions>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>

@@ -1,0 +1,34 @@
+﻿<Page
+    x:Class="Everything_Daily.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Everything_Daily"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <NavigationView x:Name="NavView"
+            IsSettingsVisible="True"
+            IsBackButtonVisible="Auto"
+            IsBackEnabled="False"
+            AlwaysShowHeader="False"
+            PaneTitle="Pane Title"
+            PaneDisplayMode="Top"
+            ExpandedModeThresholdWidth="500"
+            SelectionFollowsFocus="Disabled"
+            IsTabStop="False"
+            ItemInvoked="NavView_ItemInvoked"
+            BackRequested="NavView_BackRequested">
+
+            <NavigationView.MenuItems>
+                <NavigationViewItem x:Name="AddARecordButton" Icon="Add" Content="Add a Record" />
+                <NavigationViewItem x:Name="AddARecordTypeButton" Icon="Add" Content="Add a Record Type" />
+                <NavigationViewItem x:Name="BrowseRecordTypesButton" Icon="List" Content="Browse Record Types" />
+            </NavigationView.MenuItems>
+
+            <Frame x:Name="ContentFrame"/>
+        </NavigationView>
+    </Grid>
+</Page>
