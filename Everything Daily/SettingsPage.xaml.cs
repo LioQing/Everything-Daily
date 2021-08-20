@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Controls;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text.Json;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -27,6 +29,7 @@ namespace Everything_Daily
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
+        private IDictionary<DispatcherTimer, InfoBar> InfoBarTimers { get; set; } = new Dictionary<DispatcherTimer, InfoBar>();
         public string SaveFolder { get; private set; } = ApplicationData.Current.LocalFolder.Path.ToString();
 
         public SettingsPage()
@@ -36,8 +39,7 @@ namespace Everything_Daily
 
         private async void ExportButton_Click(object sender, RoutedEventArgs e)
         {
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            string jsonString = JsonSerializer.Serialize((App.Current as App).RecordManager, options);
+            string jsonString = JsonConvert.SerializeObject((App.Current as App).RecordManager, Formatting.Indented);
 
             FileSavePicker savePicker = new FileSavePicker();
             savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
@@ -53,11 +55,11 @@ namespace Everything_Daily
 
                 if (status == FileUpdateStatus.Complete)
                 {
-                    // OutputTextBlock.Text = "File " + file.Name + " was saved.";
+                    AddInfoBar(InfoBarSeverity.Success, "Save successfully exported.");
                 }
                 else
                 {
-                    // OutputTextBlock.Text = "File " + file.Name + " couldn't be saved.";
+                    AddInfoBar(InfoBarSeverity.Error, "Save failed to be exported.");
                 }
             }
         }
@@ -72,13 +74,45 @@ namespace Everything_Daily
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
-                string jsonString = await FileIO.ReadTextAsync(file);
-                (App.Current as App).RecordManager.Load(jsonString);
+                try
+                {
+                    var task = Task.Run(async () => await FileIO.ReadTextAsync(file));
+                    var jsonString = task.Result;
+                    (App.Current as App).RecordManager.Load(jsonString);
+
+                    AddInfoBar(InfoBarSeverity.Success, "Save successfully imported.");
+                }
+                catch(Exception)
+                {
+                    AddInfoBar(InfoBarSeverity.Error, "Save failed to be imported.");
+                }
             }
-            else
-            {
-                // this.textBlock.Text = "Operation cancelled.";
-            }
+        }
+
+        private void AddInfoBar(InfoBarSeverity severity, string msg)
+        {
+            var infoBar = new InfoBar();
+            infoBar.IsOpen = true;
+            infoBar.Severity = severity;
+            infoBar.Message = msg;
+
+            var timer = new DispatcherTimer();
+            timer.Tick += OnTimedEvent;
+            timer.Interval = new TimeSpan(0, 0, 3);
+            InfoBarTimers.Add(timer, infoBar);
+            timer.Start();
+
+            NotificationPanel.Children.Add(infoBar);
+        }
+
+        private void OnTimedEvent(object sender, object args)
+        {
+            var timer = sender as DispatcherTimer;
+
+            timer.Stop();
+            InfoBarTimers[timer].IsOpen = false;
+            NotificationPanel.Children.Remove(InfoBarTimers[timer]);
+            InfoBarTimers.Remove(timer);
         }
     }
 }

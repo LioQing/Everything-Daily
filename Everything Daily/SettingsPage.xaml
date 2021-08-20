@@ -8,26 +8,41 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid RowSpacing="10" Margin="20, 20, 20, 20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        
-        <TextBlock Style="{StaticResource TitleTextBlockStyle}">
-            Settings
-        </TextBlock>
+    <Grid Margin="20, 20, 20, 20">
+        <ScrollViewer ZoomMode="Disabled"
+                IsTabStop="True" IsVerticalScrollChainingEnabled="True"
+                HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto"
+                VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto">
+            <Grid RowSpacing="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Grid.Row="1" Spacing="10">
-            <StackPanel Orientation="Horizontal" Spacing="10">
-                <TextBlock Text="Save Location:" VerticalAlignment="Center"/>
-                <TextBlock Text="{x:Bind SaveFolder}" VerticalAlignment="Center"/>
-            </StackPanel>
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}">
+                Settings
+                </TextBlock>
 
-            <StackPanel Orientation="Horizontal" Spacing="10">
-                <Button x:Name="ExportButton" Content="Export" Click="ExportButton_Click"/>
-                <Button x:Name="ImportButton" Content="Import" Click="ImportButton_Click"/>
-            </StackPanel>
+                <StackPanel Orientation="Vertical" Grid.Row="1" Spacing="10">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Text="Save Location:" VerticalAlignment="Center"/>
+                        <TextBlock Text="{x:Bind SaveFolder}" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Button x:Name="ExportButton" Content="Export" Click="ExportButton_Click"/>
+                        <Button x:Name="ImportButton" Content="Import" Click="ImportButton_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+
+        <StackPanel x:Name="NotificationPanel" VerticalAlignment="Bottom" Orientation="Vertical">
+            <StackPanel.ChildrenTransitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition />
+                </TransitionCollection>
+            </StackPanel.ChildrenTransitions>
         </StackPanel>
     </Grid>
 </Page>

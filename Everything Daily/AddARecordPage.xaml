@@ -8,11 +8,12 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <ScrollViewer ZoomMode="Disabled"
+    <Grid Margin="20, 20, 20, 20">
+        <ScrollViewer ZoomMode="Disabled"
             IsTabStop="True" IsVerticalScrollChainingEnabled="True"
             HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto"
             VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto">
-        <Grid Margin="20, 20, 20, 20" RowSpacing="10">
+        <Grid RowSpacing="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -50,14 +51,15 @@
                     <Button Width="150" Click="AddButton_Click">Add</Button>
                 </Border>
             </StackPanel>
-
-            <StackPanel x:Name="NotificationPanel" VerticalAlignment="Bottom" Orientation="Vertical" Grid.Row="1">
-                <StackPanel.ChildrenTransitions>
-                    <TransitionCollection>
-                        <EntranceThemeTransition />
-                    </TransitionCollection>
-                </StackPanel.ChildrenTransitions>
-            </StackPanel>
         </Grid>
     </ScrollViewer>
+
+    <StackPanel x:Name="NotificationPanel" VerticalAlignment="Bottom" Orientation="Vertical">
+        <StackPanel.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition />
+            </TransitionCollection>
+        </StackPanel.ChildrenTransitions>
+    </StackPanel>
+    </Grid>
 </Page>

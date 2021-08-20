@@ -137,7 +137,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Record.cs" />
     <Compile Include="RecordManager.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="RecordType.cs" />
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -238,8 +238,8 @@
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.6.1</Version>
     </PackageReference>
-    <PackageReference Include="System.Text.Json">
-      <Version>5.0.2</Version>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.1</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

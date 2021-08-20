@@ -1,28 +1,16 @@
 ﻿using Microsoft.UI;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI;
 
 namespace Everything_Daily
 {
-    public class RecordType
-    {
-        public string Name { get; set; }
-        public Color Color { get; set; }
-
-        public RecordType(string Name, Color Color)
-        {
-            this.Name = Name;
-            this.Color = Color;
-        }
-    }
-
     public class RecordManager
     {
         public IDictionary<string, RecordType> RecordTypes { get; set; } = new Dictionary<string, RecordType>();
@@ -57,8 +45,7 @@ namespace Everything_Daily
 
         public void Save()
         {
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            string jsonString = JsonSerializer.Serialize(this, options);
+            string jsonString = JsonConvert.SerializeObject(this, Formatting.Indented);
 
             var task = Task.Run(() => SaveStr(jsonString));
             task.Wait();
@@ -78,14 +65,14 @@ namespace Everything_Daily
             {
                 var task = Task.Run(ReadFromSave);
                 jsonString = task.Result;
-                tmpThis = JsonSerializer.Deserialize<RecordManager>(jsonString);
+                tmpThis = JsonConvert.DeserializeObject<RecordManager>(jsonString);
             }
             catch (Exception)
             {
                 Save();
                 var task = Task.Run(ReadFromSave);
                 jsonString = task.Result;
-                tmpThis = JsonSerializer.Deserialize<RecordManager>(jsonString);
+                tmpThis = JsonConvert.DeserializeObject<RecordManager>(jsonString);
             }
             RecordTypes = tmpThis.RecordTypes;
             Records = tmpThis.Records;
@@ -94,7 +81,7 @@ namespace Everything_Daily
         public void Load(string jsonString)
         {
             RecordManager tmpThis;
-            tmpThis = JsonSerializer.Deserialize<RecordManager>(jsonString);
+            tmpThis = JsonConvert.DeserializeObject<RecordManager>(jsonString);
             RecordTypes = tmpThis.RecordTypes;
             Records = tmpThis.Records;
         }
