@@ -97,11 +97,13 @@ namespace Everything_Daily
         private void DurationCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             RecordDurationPicker.IsEnabled = true;
+            RecordEndTimePicker.IsEnabled = true;
         }
 
         private void DurationCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             RecordDurationPicker.IsEnabled = false;
+            RecordEndTimePicker.IsEnabled = false;
         }
 
         private void AddInfoBar(InfoBarSeverity severity, string msg)
@@ -128,6 +130,62 @@ namespace Everything_Daily
             InfoBarTimers[timer].IsOpen = false;
             NotificationPanel.Children.Remove(InfoBarTimers[timer]);
             InfoBarTimers.Remove(timer);
+        }
+
+        private void RecordEndTimePicker_SelectedTimeChanged(TimePicker sender, TimePickerSelectedValueChangedEventArgs args)
+        {
+            if (sender.SelectedTime is null)
+                return;
+
+            if (RecordTimePicker.SelectedTime is null)
+            {
+                AddInfoBar(InfoBarSeverity.Informational, "Please select record start time first.");
+                sender.SelectedTime = null;
+                RecordDurationPicker.SelectedTime = null;
+                return;
+            }
+
+            if (RecordDurationPicker.SelectedTime != null && 
+                RecordDurationPicker.SelectedTime.Value.ToString("hh\\:mm") == (sender.SelectedTime.Value - RecordTimePicker.SelectedTime.Value).ToString("hh\\:mm"))
+                return;
+
+            if (sender.SelectedTime.Value < RecordTimePicker.SelectedTime.Value)
+            {
+                AddInfoBar(InfoBarSeverity.Informational, "Record end time cannot be earlier than start time.");
+                sender.SelectedTime = null;
+                RecordDurationPicker.SelectedTime = null;
+                return;
+            }
+
+            RecordDurationPicker.SelectedTime = sender.SelectedTime.Value - RecordTimePicker.SelectedTime.Value;
+        }
+
+        private void RecordDurationPicker_SelectedTimeChanged(TimePicker sender, TimePickerSelectedValueChangedEventArgs args)
+        {
+            if (sender.SelectedTime is null)
+                return;
+
+            if (RecordTimePicker.SelectedTime is null)
+            {
+                AddInfoBar(InfoBarSeverity.Informational, "Please select record start time first.");
+                sender.SelectedTime = null;
+                RecordEndTimePicker.SelectedTime = null;
+                return;
+            }
+
+            if (RecordEndTimePicker.SelectedTime != null &&
+                RecordEndTimePicker.SelectedTime.Value.ToString("hh\\:mm") == (RecordTimePicker.SelectedTime.Value + sender.SelectedTime.Value).ToString("hh\\:mm"))
+                return;
+
+            if ((sender.SelectedTime.Value + RecordTimePicker.SelectedTime.Value).TotalHours > 24)
+            {
+                AddInfoBar(InfoBarSeverity.Informational, "Record cannot be across multiple dates.");
+                sender.SelectedTime = null;
+                RecordEndTimePicker.SelectedTime = null;
+                return;
+            }
+
+            RecordEndTimePicker.SelectedTime = RecordTimePicker.SelectedTime.Value + sender.SelectedTime.Value;
         }
     }
 }

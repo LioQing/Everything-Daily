@@ -35,17 +35,24 @@
                             Header="Time" 
                             MinuteIncrement="15"/>
 
-                <StackPanel Orientation="Vertical">
-                    <CheckBox x:Name="DurationCheckBox" 
-                              Content="Duration" 
-                              Checked="DurationCheckBox_Checked" 
-                              Unchecked="DurationCheckBox_Unchecked"/>
+                <CheckBox x:Name="DurationCheckBox" 
+                            Content="Duration" 
+                            Checked="DurationCheckBox_Checked" 
+                            Unchecked="DurationCheckBox_Unchecked"/>
 
-                    <TimePicker x:Name="RecordDurationPicker" 
-                                ClockIdentifier="24HourClock" 
-                                MinuteIncrement="15" 
-                                IsEnabled="False"/>
-                </StackPanel>
+                <TimePicker x:Name="RecordEndTimePicker" 
+                            ClockIdentifier="24HourClock" 
+                            MinuteIncrement="15" 
+                            IsEnabled="False"
+                            Header="End Time" 
+                            SelectedTimeChanged="RecordEndTimePicker_SelectedTimeChanged"/>
+
+                <TimePicker x:Name="RecordDurationPicker" 
+                            ClockIdentifier="24HourClock" 
+                            MinuteIncrement="15" 
+                            IsEnabled="False"
+                            Header="Duration" 
+                            SelectedTimeChanged="RecordDurationPicker_SelectedTimeChanged"/>
 
                 <Border BorderThickness="0, 20, 0, 0">
                     <Button Width="150" Click="AddButton_Click">Add</Button>
