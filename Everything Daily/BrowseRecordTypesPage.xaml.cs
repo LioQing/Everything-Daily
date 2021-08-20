@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -47,6 +48,8 @@ namespace Everything_Daily
 
                 var grid = new Grid() { ColumnSpacing = 10 };
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(4, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
                 border.Child = grid;
@@ -89,6 +92,24 @@ namespace Everything_Daily
                 var idText = new TextBlock() { Text = id };
                 idText.Style = this.Resources["CaptionTextBlockStyle"] as Style;
                 idBorder.Child = idText;
+
+                // count
+                var recordList = (App.Current as App).RecordManager.Records;
+
+                var countText = new TextBlock() { Text = recordList.Where(x => x.Id == id).Select(x => x.Id).Count().ToString() };
+                countText.HorizontalAlignment = HorizontalAlignment.Left;
+                countText.VerticalAlignment = VerticalAlignment.Center;
+                countText.Style = this.Resources["SubtitleTextBlockStyle"] as Style;
+                Grid.SetColumn(countText, 2);
+                grid.Children.Add(countText);
+
+                // duration
+                var durationText = new TextBlock() { Text = (new TimeSpan(recordList.Where(x => x.Id == id).Sum(x => TimeSpan.Parse(x.Duration).Ticks)).TotalMinutes / 60f).ToString() + " hr" };
+                durationText.HorizontalAlignment = HorizontalAlignment.Left;
+                durationText.VerticalAlignment = VerticalAlignment.Center;
+                durationText.Style = this.Resources["SubtitleTextBlockStyle"] as Style;
+                Grid.SetColumn(durationText, 3);
+                grid.Children.Add(durationText);
 
                 ListView.Items.Add(border);
             }
