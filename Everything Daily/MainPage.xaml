@@ -3,24 +3,33 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Everything_Daily"
+    xmlns:notepads="using:Notepads.Brushes"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Grid.Background>
+            <notepads:HostBackdropAcrylicBrush TintOpacity="0.4" LuminosityColor="{ThemeResource SystemChromeMediumColor}"/>
+        </Grid.Background>
+        
         <NavigationView x:Name="NavView"
-            IsSettingsVisible="True"
-            IsBackButtonVisible="Auto"
-            IsBackEnabled="False"
-            AlwaysShowHeader="False"
-            PaneTitle="Pane Title"
-            PaneDisplayMode="Top"
-            ExpandedModeThresholdWidth="500"
-            SelectionFollowsFocus="Disabled"
-            IsTabStop="False"
-            ItemInvoked="NavView_ItemInvoked"
-            BackRequested="NavView_BackRequested">
+                        IsSettingsVisible="True"
+                        IsBackButtonVisible="Auto"
+                        IsBackEnabled="False"
+                        AlwaysShowHeader="False"
+                        PaneTitle="Pane Title"
+                        PaneDisplayMode="Top"
+                        ExpandedModeThresholdWidth="500"
+                        SelectionFollowsFocus="Disabled"
+                        IsTabStop="False"
+                        ItemInvoked="NavView_ItemInvoked"
+                        BackRequested="NavView_BackRequested">
+
+            <NavigationView.Resources>
+                <x:Double x:Key="NavigationViewTopPaneHeight">40</x:Double>
+            </NavigationView.Resources>
 
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Name="AddARecordButton" Icon="Add" Content="Add a Record" />
@@ -30,5 +39,34 @@
 
             <Frame x:Name="ContentFrame"/>
         </NavigationView>
+
+        <Grid x:Name="AppTitleBar" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+            <!-- Width of the padding columns is set in LayoutMetricsChanged handler. -->
+            <!-- Using padding columns instead of Margin ensures that the background
+         paints the area under the caption control buttons (for transparent buttons). -->
+
+            <Grid.Background>
+                <notepads:HostBackdropAcrylicBrush TintOpacity="0.4" LuminosityColor="{ThemeResource SystemChromeMediumColor}"/>
+            </Grid.Background>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="LeftPaddingColumn" Width="0"/>
+                <ColumnDefinition/>
+                <ColumnDefinition x:Name="RightPaddingColumn" Width="0"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>
+            </Grid.RowDefinitions>
+            
+            <Image Source="Assets/Square44x44Logo.png" 
+                   Grid.Column="1" HorizontalAlignment="Left" 
+                   Width="20" Height="20" Margin="12,0"/>
+
+            <TextBlock Text="Simple Timer" 
+                       Grid.Column="1" 
+                       Style="{StaticResource CaptionTextBlockStyle}" 
+                       Margin="43, 8, 0, 0"/>
+        </Grid>
     </Grid>
 </Page>
