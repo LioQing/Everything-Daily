@@ -26,6 +26,7 @@ namespace Everything_Daily
     {
         public bool AscSort { get; set; } = true;
         private string SelectedTypeId { get; set; } = null;
+        private string SelectedInfoType { get; set; }
 
         public BrowseRecordTypesPage()
         {
@@ -47,8 +48,8 @@ namespace Everything_Daily
                 var border = new Border() { BorderThickness = new Thickness(2) };
 
                 var grid = new Grid() { ColumnSpacing = 10 };
-                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
-                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(4, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(72) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
@@ -96,7 +97,11 @@ namespace Everything_Daily
                 // count
                 var recordList = (App.Current as App).RecordManager.Records;
 
-                var countText = new TextBlock() { Text = recordList.Where(x => x.Id == id).Select(x => x.Id).Count().ToString() };
+                var countTime = GetCountAndTimeWithPred(recordList, x => x.Id == id);
+                var countText = new TextBlock()
+                {
+                    Text = $"{countTime.Count} ({countTime.Time} h)"
+                };
                 countText.HorizontalAlignment = HorizontalAlignment.Left;
                 countText.VerticalAlignment = VerticalAlignment.Center;
                 countText.Style = this.Resources["SubtitleTextBlockStyle"] as Style;
@@ -104,12 +109,27 @@ namespace Everything_Daily
                 grid.Children.Add(countText);
 
                 // duration
-                var durationText = new TextBlock() { Text = (new TimeSpan(recordList.Where(x => x.Id == id).Sum(x => TimeSpan.Parse(x.Duration).Ticks)).TotalMinutes / 60f).ToString() + " hr" };
-                durationText.HorizontalAlignment = HorizontalAlignment.Left;
-                durationText.VerticalAlignment = VerticalAlignment.Center;
-                durationText.Style = this.Resources["SubtitleTextBlockStyle"] as Style;
-                Grid.SetColumn(durationText, 3);
-                grid.Children.Add(durationText);
+                var infoText = new TextBlock();
+                if (SelectedInfoType == "Count (Time) in the Last 7 Days")
+                {
+                    countTime = GetCountAndTimeWithPred(recordList, x => x.Id == id && (DateTime.Today - x.Time.Date).Days <= 7);
+                    infoText.Text = $"{countTime.Count} ({countTime.Time} h)";
+                }
+                else if (SelectedInfoType == "Count (Time) in the Last 28 Days")
+                {
+                    countTime = GetCountAndTimeWithPred(recordList, x => x.Id == id && (DateTime.Today - x.Time.Date).Days <= 28);
+                    infoText.Text = $"{countTime.Count} ({countTime.Time} h)";
+                }
+                else // (SelectedInfoType == "Average in the Last 28 Days")
+                {
+                    countTime = GetCountAndTimeWithPred(recordList, x => x.Id == id && (DateTime.Today - x.Time.Date).Days <= 28);
+                    infoText.Text = $"{countTime.Count / 4f} ({countTime.Time / 4f} h) per Week";
+                }
+                infoText.HorizontalAlignment = HorizontalAlignment.Left;
+                infoText.VerticalAlignment = VerticalAlignment.Center;
+                infoText.Style = this.Resources["SubtitleTextBlockStyle"] as Style;
+                Grid.SetColumn(infoText, 3);
+                grid.Children.Add(infoText);
 
                 ListView.Items.Add(border);
             }
@@ -171,6 +191,27 @@ namespace Everything_Daily
         {
             AscSort = !AscSort;
             UpdateList();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count == 0)
+                return;
+
+            SelectedInfoType = (string)e.AddedItems[0];
+
+            if (ListView != null)
+                UpdateList();
+        }
+
+        private (int Count, double Time) GetCountAndTimeWithPred(IList<Record> recordList, Func<Record, bool> pred)
+        {
+            return (
+                recordList.Where(x => pred(x)).Select(x => x.Id).Count(),
+                new TimeSpan(recordList
+                    .Where(x => pred(x))
+                    .Sum(x => TimeSpan.Parse(x.Duration).Ticks)).TotalMinutes / 60f
+                );
         }
     }
 }

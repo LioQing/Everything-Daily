@@ -39,15 +39,20 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="72"/>
-                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
                 <TextBlock Text="Color" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                 <TextBlock Text="Type Name (Type ID)" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="1"/>
-                <TextBlock Text="Count" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="2"/>
-                <TextBlock Text="Total Time" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="3"/>
+                <TextBlock Text="Count (Total Time)" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="2"/>
+                <ComboBox SelectionChanged="ComboBox_SelectionChanged" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="3" SelectedIndex="0">
+                    <x:String>Count (Time) in the Last 7 Days</x:String>
+                    <x:String>Count (Time) in the Last 28 Days</x:String>
+                    <x:String>Average in the Last 28 Days</x:String>
+                </ComboBox>
+                <!--<TextBlock Text="Total Time" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="3"/>-->
             </Grid>
         </Border>
 

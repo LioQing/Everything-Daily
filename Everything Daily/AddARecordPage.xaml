@@ -33,7 +33,8 @@
                 <TimePicker x:Name="RecordTimePicker" 
                             ClockIdentifier="24HourClock" 
                             Header="Time" 
-                            MinuteIncrement="15"/>
+                            MinuteIncrement="15"
+                            SelectedTimeChanged="RecordTimePicker_SelectedTimeChanged"/>
 
                 <CheckBox x:Name="DurationCheckBox" 
                             Content="Duration" 

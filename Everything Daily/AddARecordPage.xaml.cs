@@ -187,5 +187,11 @@ namespace Everything_Daily
 
             RecordEndTimePicker.SelectedTime = RecordTimePicker.SelectedTime.Value + sender.SelectedTime.Value;
         }
+
+        private void RecordTimePicker_SelectedTimeChanged(TimePicker sender, TimePickerSelectedValueChangedEventArgs args)
+        {
+            RecordEndTimePicker.SelectedTime = null;
+            RecordDurationPicker.SelectedTime = null;
+        }
     }
 }
