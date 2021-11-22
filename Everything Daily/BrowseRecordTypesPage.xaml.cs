@@ -112,17 +112,17 @@ namespace Everything_Daily
                 var infoText = new TextBlock();
                 if (SelectedInfoType == "Count (Time) in the Last 7 Days")
                 {
-                    countTime = GetCountAndTimeWithPred(recordList, x => x.Id == id && (DateTime.Today - x.Time.Date).Days <= 7);
+                    countTime = GetCountAndTimeWithPred(recordList, x => x.Id == id && (DateTime.Today - x.Time.Date).Days < 7);
                     infoText.Text = $"{countTime.Count} ({countTime.Time} h)";
                 }
                 else if (SelectedInfoType == "Count (Time) in the Last 28 Days")
                 {
-                    countTime = GetCountAndTimeWithPred(recordList, x => x.Id == id && (DateTime.Today - x.Time.Date).Days <= 28);
+                    countTime = GetCountAndTimeWithPred(recordList, x => x.Id == id && (DateTime.Today - x.Time.Date).Days < 28);
                     infoText.Text = $"{countTime.Count} ({countTime.Time} h)";
                 }
                 else // (SelectedInfoType == "Average in the Last 28 Days")
                 {
-                    countTime = GetCountAndTimeWithPred(recordList, x => x.Id == id && (DateTime.Today - x.Time.Date).Days <= 28);
+                    countTime = GetCountAndTimeWithPred(recordList, x => x.Id == id && (DateTime.Today - x.Time.Date).Days < 28);
                     infoText.Text = $"{countTime.Count / 4f} ({countTime.Time / 4f} h) per Week";
                 }
                 infoText.HorizontalAlignment = HorizontalAlignment.Left;
