@@ -49,8 +49,11 @@
                 <TextBlock Text="Count (Total Time)" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="2"/>
                 <ComboBox SelectionChanged="ComboBox_SelectionChanged" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="3" SelectedIndex="0">
                     <x:String>Count (Time) in the Last 7 Days</x:String>
+                    <x:String>Average in the Last 7 Days</x:String>
                     <x:String>Count (Time) in the Last 28 Days</x:String>
                     <x:String>Average in the Last 28 Days</x:String>
+                    <x:String>Count (Time) in the Last 6 Months</x:String>
+                    <x:String>Average in the Last 6 Months</x:String>
                 </ComboBox>
                 <!--<TextBlock Text="Total Time" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="3"/>-->
             </Grid>

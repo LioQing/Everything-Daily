@@ -115,15 +115,30 @@ namespace Everything_Daily
                     countTime = GetCountAndTimeWithPred(recordList, x => x.Id == id && (DateTime.Today - x.Time.Date).Days < 7);
                     infoText.Text = $"{countTime.Count} ({countTime.Time} h)";
                 }
+                else if (SelectedInfoType == "Average in the Last 7 Days")
+                {
+                    countTime = GetCountAndTimeWithPred(recordList, x => x.Id == id && (DateTime.Today - x.Time.Date).Days < 7);
+                    infoText.Text = $"{countTime.Count / 7f:0.###} ({countTime.Time / 7f:0.###} h) per Day";
+                }
                 else if (SelectedInfoType == "Count (Time) in the Last 28 Days")
                 {
                     countTime = GetCountAndTimeWithPred(recordList, x => x.Id == id && (DateTime.Today - x.Time.Date).Days < 28);
                     infoText.Text = $"{countTime.Count} ({countTime.Time} h)";
                 }
-                else // (SelectedInfoType == "Average in the Last 28 Days")
+                else if (SelectedInfoType == "Average in the Last 28 Days")
                 {
                     countTime = GetCountAndTimeWithPred(recordList, x => x.Id == id && (DateTime.Today - x.Time.Date).Days < 28);
-                    infoText.Text = $"{countTime.Count / 4f} ({countTime.Time / 4f} h) per Week";
+                    infoText.Text = $"{countTime.Count / 4f:0.###} ({countTime.Time / 4f:0.###} h) per Week";
+                }
+                else if (SelectedInfoType == "Count (Time) in the Last 6 Months")
+                {
+                    countTime = GetCountAndTimeWithPred(recordList, x => x.Id == id && (DateTime.Today - x.Time.Date).Days < 182);
+                    infoText.Text = $"{countTime.Count} ({countTime.Time} h)";
+                }
+                else if (SelectedInfoType == "Average in the Last 6 Months")
+                {
+                    countTime = GetCountAndTimeWithPred(recordList, x => x.Id == id && (DateTime.Today - x.Time.Date).Days < 182);
+                    infoText.Text = $"{countTime.Count / 182f:0.###} ({countTime.Time / 182f:0.###} h) per Week";
                 }
                 infoText.HorizontalAlignment = HorizontalAlignment.Left;
                 infoText.VerticalAlignment = VerticalAlignment.Center;
